@@ -16,6 +16,9 @@ This is how you make a list, if you need one:
 * problem 2
 * etc.
 
+* Using a publicly available dataset in English for training and testing
+* Training a Neural Network for multi-label classification using an adapted method (BP-MLL)
+* Predicting labels for Spanish, Catalan, Galician and Euskera
 
 ## How is it used?
 
@@ -67,6 +70,10 @@ How could your project grow and become something even more? What kind of skills,
 
 
 ## Acknowledgments
+
+* [Efficient (vectorized) implementation of the BP-MLL loss function](https://github.com/vanHavel/bp-mll-tensorflow)
+* [Language-Agnostic SEntence Representations (LASER)](https://github.com/facebookresearch/LASER)
+* [LASER for NLP tasks](https://www.engati.com/blog/laser-for-nlp-tasks-part-ii)
 
 * list here the sources of inspiration 
 * do not use code, images, data etc. from others without permission
