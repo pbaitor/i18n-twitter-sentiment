@@ -74,6 +74,7 @@ How could your project grow and become something even more? What kind of skills,
 * [Efficient (vectorized) implementation of the BP-MLL loss function](https://github.com/vanHavel/bp-mll-tensorflow)
 * [Language-Agnostic SEntence Representations (LASER)](https://github.com/facebookresearch/LASER)
 * [LASER for NLP tasks](https://www.engati.com/blog/laser-for-nlp-tasks-part-ii)
+* [SemEval-2018 Affect in Tweets DIstant Supervision Corpus (SemEval-2018 AIT DISC)](https://competitions.codalab.org/competitions/17751#learn_the_details-datasets)
 
 * list here the sources of inspiration 
 * do not use code, images, data etc. from others without permission
