@@ -1,7 +1,7 @@
 # Multi-languange sentiment analysis using neural networks and zero shot cross lingual transfer learning.
 
 Final project for the Building AI course
-*December 2020
+*December 2020*
 
 ## Summary
 
