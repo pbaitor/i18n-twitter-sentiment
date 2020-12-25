@@ -75,7 +75,9 @@ This dataset has this format:
 | trust   | binary value        | 0       |
 
 | ID | Tweet | anger | anticipation | disgust | fear | joy | love | optimism | pessimism | sadness | surprise | trust |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2017-En-21441 | Do you think humans have the sense for recognizing impending doom? | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 |
+
 
 Where each tweet text has been annotated using a binary classification (1 = on average reviewers did infer this emotion from the text and 0 = on average they didn't).
 
