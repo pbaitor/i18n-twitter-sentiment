@@ -1,11 +1,11 @@
 # Multi-languange sentiment analysis using neural networks and zero shot cross lingual transfer learning.
 
 Final project for the Building AI course
-December 2020
+*December 2020
 
 ## Summary
 
-*Describe briefly in 2-3 sentences what your project is about. About 250 characters is a nice length!*
+TL;DR: this project builds a AI that predicts 11 emotions from sentences and you can try it on real tweets on https://emotions.aitorperez.com
 
 ## Background
 
