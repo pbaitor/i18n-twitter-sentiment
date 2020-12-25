@@ -1,26 +1,71 @@
 # Multi-languange sentiment analysis using neural networks and zero shot cross lingual transfer learning.
 
 Final project for the Building AI course
+December 2020
 
 ## Summary
 
 Describe briefly in 2-3 sentences what your project is about. About 250 characters is a nice length! 
 
-
 ## Background
 
 Which problems does your idea solve? How common or frequent is this problem? What is your personal motivation? Why is this topic important or interesting?
 
-This is how you make a list, if you need one:
-* problem 1
-* problem 2
-* etc.
+I wanted to get a practical experience with:
+* Programming a multilayer perceptron
+* Using a publicly available datasetfor training and testing
+* Solving a multi-label classification task
+* Putting the AI system to use
 
-* Using a publicly available dataset in English for training and testing
-* Training a Neural Network for multi-label classification using an adapted method (BP-MLL)
-* Predicting labels for different languages
+After doing some research (mainly about Natural Language Processing) I discovered 2 things that caught my attention:
+* LASER, an AI system from facebook that maps sentences to a 1024-dimensional space with the additional benefit that sentences of similar meaning across 93 languages get mapped nearby on the embedding space
+* A dataset of tweets for sentiment analysis which includes annotations for intensity (regression and ordinal classification for 4 emotions), polarity (regression and ordinal classification), presence or absence of emotion (multi-labelling of 11 emotions)
+
+I decided to try to use combine them.
 
 ## How is it used?
+
+### Development process
+
+#### Preparing the datasets
+
+#### Extracting embeddings
+
+#### Training the multi-label classifier
+
+#### Evaluation of the multi-label classifier
+
+#### Defining a base binary classifier
+
+#### Cross-validation and baseline evaluation for each separate classification task
+
+#### Training multiple binary classifiers
+
+#### Evaluation of the combined binary classifiers
+
+#### Precision, recall and f-score
+
+#### Manual tests with new data and subjective validation
+
+#### Saving the models for use
+
+### The notebook
+
+The development process was done entirely on a [Google Colab notebook](https://colab.research.google.com/) that you can find in this repository.
+You may need to adapt the I/O calls as I uses my own Google Drive to store data.
+
+### Practical application
+
+You can find an interactive demonstration here:
+https://emotions.aitorperez.com
+
+You can see the process in action on real tweets.
+
+The NLP pipeline runs in Python (tokenizing sentences with NLTK + extracting embeddings with LASER) and has been deployed in a Google Cloud Function.
+The trained models were exported and run on the browser with TensorFlowJS.
+
+
+
 
 Describe the process of using the solution. In what kind situations is the solution needed (environment, time, etc.)? Who are the users, what kinds of needs should be taken into account?
 
@@ -55,35 +100,51 @@ Where does your data come from? Do you collect it yourself or do you use data co
 If you need to use links, here's an example:
 [Twitter API](https://developer.twitter.com/en/docs)
 
+### Data
+
 The data used is from the [SemEval2018-Task1](https://competitions.codalab.org/competitions/17751) competition, specifically **the E-c (emotion classification) dataset**.
 This dataset has this format:
-
-| Field      | Description | Example     |
-| ----------- | ----------- | ----------- |
-| ID      | Text       | 2017-En-21441       |
-| Tweet   | Text        | Do you think humans have the sense for recognizing impending doom?       |
-| anger   | binary value        | 0       |
-| anticipation   | binary value        | 1       |
-| disgust   | binary value        | 0       |
-| fear   | binary value        | 0       |
-| joy   | binary value        | 0       |
-| love   | binary value        | 0       |
-| optimism   | binary value        | 0       |
-| pessimism   | binary value        | 1       |
-| sadness   | binary value        | 0       |
-| surprise   | binary value        | 0       |
-| trust   | binary value        | 0       |
 
 | ID | Tweet | anger | anticipation | disgust | fear | joy | love | optimism | pessimism | sadness | surprise | trust |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | 2017-En-21441 | Do you think humans have the sense for recognizing impending doom? | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 |
 
-
 Where each tweet text has been annotated using a binary classification (1 = on average reviewers did infer this emotion from the text and 0 = on average they didn't).
+
+The E-c dataset is divided in train, dev and test datasets.
+
+### Methods
+
+I opted to use a feedforward artificial neural network (ANN) from the start, because I wanted to get first-hand experience building and training one.
+Specifically my intention was to use a multilayer perceptron (MLP).
+At first, my idea was to apply multi-label classification with a single neural network but after having disappointing results I changed the approach to multiple binary classificators.
 
 ## Challenges
 
 What does your project _not_ solve? Which limitations and ethical considerations should be taken into account when deploying a solution like this?
+
+### AI challenges
+
+As it stands, this project does a decent job of identifying probable emotions from sentences.
+But it sometime fails because it is not taking into consideration the context (the other sentences of the tweet): in some instances it gives hilarious combinations on a single tweet that don't hold upon human review.
+Trying to then infer emotion for the full tweet is not feasible with this unless almost each sentence carries similar sentiment (in the demo I average probabilities and show number of occurrences, but it is far from a realistic reasoning).
+
+The training was done with full tweets (in absence of a dataset of sentences) but the real use case is in analyzing sentences and the input features are the LASER embeddings which are intended to be extracted from sentences (not full tweets).
+
+This mismatch probably has made the AI system less accurate.
+
+Also, the dataset is not very extensive (about 6600 tweets).
+That hurt at the initial multi-label classification idea and it is still not ideal on the final solution.
+
+### Real-world hurdles
+
+From a practical point of view, I was surprised that the Tensorflow model could be executed in Javascript but the rest of the pipeline being in Pyhton needs a real server and some real disk (the LASER model goes about 200MB, clearly not something that can be ported to a browser).
+
+Not an easy thing to find a way to deploy (for free) Python code and get it running with dependencies like LASER.
+
+### Considerations
+
+Which limitations and ethical considerations should be taken into account when deploying a solution like this?
 
 ## Next steps
 
@@ -108,9 +169,3 @@ An AI like this could be part of a system to watch out for hateful/offensive com
 * [Language-Agnostic SEntence Representations (LASER)](https://github.com/facebookresearch/LASER)
 * [LASER for NLP tasks](https://www.engati.com/blog/laser-for-nlp-tasks-part-ii)
 * [SemEval-2018 Affect in Tweets DIstant Supervision Corpus (SemEval-2018 AIT DISC)](https://competitions.codalab.org/competitions/17751#learn_the_details-datasets)
-
-* list here the sources of inspiration 
-* do not use code, images, data etc. from others without permission
-* when you have permission to use other people's materials, always mention the original creator and the open source / Creative Commons licence they've used
-  <br>For example: [Sleeping Cat on Her Back by Umberto Salvagnin](https://commons.wikimedia.org/wiki/File:Sleeping_cat_on_her_back.jpg#filelinks) / [CC BY 2.0](https://creativecommons.org/licenses/by/2.0)
-* etc
