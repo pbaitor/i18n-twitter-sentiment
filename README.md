@@ -1,4 +1,4 @@
-# Multi-languange sentiment analysis using zero shot cross lingual transfer learning
+# Multi-languange sentiment analysis using neural networks and zero shot cross lingual transfer learning.
 
 Final project for the Building AI course
 
@@ -18,7 +18,7 @@ This is how you make a list, if you need one:
 
 * Using a publicly available dataset in English for training and testing
 * Training a Neural Network for multi-label classification using an adapted method (BP-MLL)
-* Predicting labels for Spanish, Catalan, Galician and Euskera
+* Predicting labels for different languages
 
 ## How is it used?
 
@@ -55,19 +55,43 @@ Where does your data come from? Do you collect it yourself or do you use data co
 If you need to use links, here's an example:
 [Twitter API](https://developer.twitter.com/en/docs)
 
-| Syntax      | Description |
-| ----------- | ----------- |
-| Header      | Title       |
-| Paragraph   | Text        |
+The data used is from the [SemEval2018-Task1](https://competitions.codalab.org/competitions/17751) competition, specifically **the E-c (emotion classification) dataset**.
+This dataset has this format:
+
+| Field      | Description | Example     |
+| ----------- | ----------- | ----------- |
+| ID      | Text       | 2017-En-21441       |
+| Tweet   | Text        | Do you think humans have the sense for recognizing impending doom?       |
+| anger   | binary value        | 0       |
+| anticipation   | binary value        | 1       |
+| disgust   | binary value        | 0       |
+| fear   | binary value        | 0       |
+| joy   | binary value        | 0       |
+| love   | binary value        | 0       |
+| optimism   | binary value        | 0       |
+| pessimism   | binary value        | 1       |
+| sadness   | binary value        | 0       |
+| surprise   | binary value        | 0       |
+| trust   | binary value        | 0       |
+
+Where each tweet text has been annotated using a binary classification (1 = on average reviewers did infer this emotion from the text and 0 = on average they didn't).
 
 ## Challenges
 
 What does your project _not_ solve? Which limitations and ethical considerations should be taken into account when deploying a solution like this?
 
-## What next?
+## Next steps
 
-How could your project grow and become something even more? What kind of skills, what kind of assistance would you  need to move on? 
+Some next steps could be:
 
+* Trying to find a larger dataset to use in training
+* Finding a more appropriate dataset (one with annotations for sentences)
+* Fine-tunning the current neural network design
+* Evaluating the current approach with neural networks against other solutions (including simpler ones like Naive Bayes Classifications, Nearest Neighbours, etc.)
+
+As for the applicability, i think that the actual tokenization and prediction is quite fast, so embedding into server or desktop applications would be feasible.
+The dependencies (specifically the pre-trained Laser model) are quite heavy so it would be problematic on mobile applications.
+An AI like this could be part of a system to watch out for hateful/offensive comments, a system to predict the mental health of people, a way to make reviews richer, or it could also be another input for the priorization of issues on a ticketing platform.
 
 ## Acknowledgments
 
