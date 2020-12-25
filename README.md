@@ -6,12 +6,12 @@ Final project for the Building AI course
 
 ## Summary
 
-TL;DR: this project builds a **AI that predicts 11 emotions** from sentences and you can try it on real tweets on https://emotions.aitorperez.com
+TL;DR: this project builds an **AI that predicts 11 emotions from text sentences** and you can try it on real tweets going to https://emotions.aitorperez.com
 
 ## Background
 
 I wanted to get a practical experience with:
-* Programming a multilayer perceptron
+* Programming a multilayer perceptron (MLP)
 * Using a publicly available datasetfor training and testing
 * Solving a multi-label classification task
 * Putting the AI system to use
