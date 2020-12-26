@@ -130,7 +130,7 @@ We first define the following MLP using as a template the example one from the B
 * Sigmoid output function
 * Adaptive Gradient Algorithm (Adagrad) optimization function
 
-```
+```python
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.losses import BinaryCrossentropy
