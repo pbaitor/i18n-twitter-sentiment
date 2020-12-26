@@ -33,7 +33,7 @@ I thought it would be interesting to try to put together an AI capable of doing 
 
 #### Dependencies
 
-```
+```python
 # Laser and trained models
 pip install laserembeddings
 python -m laserembeddings download-models
@@ -49,7 +49,8 @@ nltkdownload('punkt')
 #### Preparing the datasets
 
 First, we load the data to numpy arrays from the txt files:
-```
+
+```python
 import numpy as np
 
 X_subset_raw = np.genfromtxt('/content/drive/MyDrive/Machine Learning/Datasets/SemEval-2018 Affect in Tweets E-c/2018-E-c-En-dev.txt', skip_header=1, usecols=(1), dtype=str, delimiter="\t", comments="#@")
@@ -66,7 +67,8 @@ From the paper where BP-MLL is proposed as a loss function to adapt ANN to multi
 
 We can safely assume no tweet will be annotated with every emotion, but there may be tweets without any.
 We can inspect each subset for that:
-```
+
+```python
 count = 0
 for element in Y_subset:
   if np.sum(element) == 0:
@@ -75,12 +77,14 @@ print(count)
 ```
 
 On the training subset we find these tweets without emotion:
-```
+
+```python
 204
 ```
 
 To remove this instances, we can use the following:
-```
+
+```python
 Y_subset_clean = np.array([item for item in Y_subset if np.sum(item)>0])
 print("Cleaned Y_subset from ", len(Y_subset), " to ", len(Y_subset_clean))
 
@@ -95,7 +99,8 @@ Cleaned X_train from  6838  to  6634
 ```
 
 Finally, we run a quick statistic to check the distribution of the annotated emotions on the training subset:
-```
+
+```python
 accum = sum(Y_train_clean)
 print(np.around(accum/len(Y_train_clean),decimals=2))
 ```
@@ -111,14 +116,16 @@ Clearly the training dataset isn't balanced and there are some emotions with ver
 #### Extracting embeddings
 
 The embeddings on Laser's 1024-dimensional space can be easily obtaine with:
-```
+
+```python
 from laserembeddings import Laser
 laser = Laser()
 X_train_embeddings = laser.embed_sentences(X_train_clean,lang='en')
 ```
 
 This results in a matrix with this shape for the trainig dataset:
-```
+
+```python
 (6634, 1024)
 ```
 
@@ -152,7 +159,8 @@ model.compile(loss=bp_mll_loss, optimizer='adagrad', metrics = ['accuracy'])
 ```
 
 We can train for a few epochs with:
-```
+
+```python
 model.fit(X_train_embeddings, Y_train_clean, epochs=20, validation_data=(X_dev_embeddings, Y_dev_clean))
 ```
 
