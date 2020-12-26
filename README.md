@@ -8,6 +8,8 @@ Final project for the Building AI course
 
 TL;DR: this project builds an **AI that predicts 11 emotions from text sentences in 93 languages** and you can try it on real tweets going to https://emotions.aitorperez.com
 
+![Screenshot](/docs/emotions.png)
+
 ## Background
 
 I wanted to get a practical experience with:
