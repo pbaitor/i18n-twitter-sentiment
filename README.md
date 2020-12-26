@@ -488,16 +488,13 @@ You may need to adapt the I/O calls as it uses paths from my own Google Drive to
 
 ### Practical application
 
-You can find an interactive demonstration here:
-https://emotions.aitorperez.com
+You can find an interactive demonstration at https://emotions.aitorperez.com where you can see the process in action on real tweets.
 
-You can see the process in action on real tweets.
-
-The NLP pipeline runs in Python (tokenizing sentences with NLTK + extracting embeddings with LASER) and has been deployed in a Google Cloud Function.
-The trained models were exported and run on the browser with TensorFlowJS.
+* The NLP pipeline runs in Python (tokenizing sentences with NLTK + extracting embeddings with LASER) and has been deployed in a Google Cloud Function.
+* The trained models run on the browser with TensorFlowJS.
+* The frontend was developed with React and Material-UI and is deployed at Netlify
 
 ## Data sources and AI methods
-*Where does your data come from? Do you collect it yourself or do you use data collected by someone else?*
 
 ### Data
 
@@ -509,8 +506,9 @@ This dataset has this format:
 | 2017-En-21441 | Do you think humans have the sense for recognizing impending doom? | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 | 0 |
 
 Where each tweet text has been annotated using a binary classification (1 = on average reviewers did infer this emotion from the text and 0 = on average they didn't).
+The annotations were crowdsourced and all the metodology is documented in a paper.
 
-The E-c dataset is divided in train, dev and test datasets.
+The E-c dataset is divided in train (6838), dev (886) and test (3256) datasets.
 
 ### Methods
 
@@ -519,7 +517,6 @@ Specifically my intention was to use a multilayer perceptron (MLP).
 At first, my idea was to apply multi-label classification with a single neural network but after having disappointing results I changed the approach to multiple binary classificators.
 
 ## Challenges
-*What does your project _not_ solve? Which limitations and ethical considerations should be taken into account when deploying a solution like this?*
 
 ### AI challenges
 
@@ -546,12 +543,12 @@ Not an easy thing to find a way to deploy (for free) Python code and get it runn
 
 ## Next steps
 
-To build upon this projec, some next steps that could be taken are:
+To build upon this project, some next steps that could be taken are:
 
-* Searching for a larger dataset to use in training
-* Changing to a dataset more appropriate (one with annotations for sentences)
+* Searching for a larger dataset to use in training, or
+* Replacing it with a dataset more appropriate (one with annotations for sentences, for example)
 * Fine-tunning the current neural network design
-* Evaluating the current approach with neural networks against other solutions (including simpler ones like Naive Bayes Classifications, Nearest Neighbours, etc.)
+* Evaluating other solutions (including simpler ones like Naive Bayes Classifications, Nearest Neighbours, etc.)
 
 As for the applicability, i think that the actual tokenization and prediction is quite fast, so embedding into server or desktop applications would be feasible.
 The dependencies (specifically the pre-trained Laser model) are quite heavy so it would be problematic on mobile applications.
