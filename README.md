@@ -25,13 +25,136 @@ I thought it would be interesting to try to put together an AI capable of doing 
 ## How is it used?
 *Describe the process of using the solution. In what kind situations is the solution needed (environment, time, etc.)? Who are the users, what kinds of needs should be taken into account?*
 
+
+
+
+
 ### Development process
+
+#### Dependencies
+
+```
+# Laser and trained models
+pip install laserembeddings
+python -m laserembeddings download-models
+
+# BM-MLL loss function
+pip install bpmll
+
+# Punkt tokenizer from nltk
+from nltk import download as nltkdownload
+nltkdownload('punkt')
+```
 
 #### Preparing the datasets
 
+First, we load the data to numpy arrays from the txt files:
+```
+import numpy as np
+
+X_subset_raw = np.genfromtxt('/content/drive/MyDrive/Machine Learning/Datasets/SemEval-2018 Affect in Tweets E-c/2018-E-c-En-dev.txt', skip_header=1, usecols=(1), dtype=str, delimiter="\t", comments="#@")
+Y_subset = np.genfromtxt('/content/drive/MyDrive/Machine Learning/Datasets/SemEval-2018 Affect in Tweets E-c/2018-E-c-En-dev.txt', skip_header=1, usecols=list(range(2,13)), delimiter="\t", comments="#@")
+# numpy.gentext assumes "#" as the start of a comment on text, but the tweets dataset have a lot of # symbols
+# We change the comment delimiter to something that won't be found on the tweet text
+
+X_subset = np.array([s.replace('#', '') for s in X_subset_raw])
+# Finally we remove all the # (because we want "word" to have the same meaning than "#word")
+```
+
+From the paper where BP-MLL is proposed as a loss function to adapt ANN to multi-label classification there is a consideration we must observe:
+*Every sample needs to have at least one label and no sample may have all labels.*
+
+We can safely assume no tweet will be annotated with every emotion, but there may be tweets without any.
+We can inspect each subset for that:
+```
+count = 0
+for element in Y_subset:
+  if np.sum(element) == 0:
+    count +=1
+print(count)
+```
+
+On the training subset we find these tweets without emotion:
+```
+204
+```
+
+To remove this instances, we can use the following:
+```
+Y_subset_clean = np.array([item for item in Y_subset if np.sum(item)>0])
+print("Cleaned Y_subset from ", len(Y_subset), " to ", len(Y_subset_clean))
+
+X_subset_clean = np.array([X_train[i] for i, item in enumerate(Y_subset) if np.sum(item)>0])
+print("Cleaned X_subset from ", len(X_subset), " to ", len(X_subset_clean))
+```
+
+For the training subset this results in:
+```
+Cleaned Y_train from  6838  to  6634
+Cleaned X_train from  6838  to  6634
+```
+
+Finally, we run a quick statistic to check the distribution of the annotated emotions on the training subset:
+```
+accum = sum(Y_train_clean)
+print(np.around(accum/len(Y_train_clean),decimals=2))
+```
+
+The results are:
+
+| anger | anticipation | disgust | fear | joy | love | optimism | pessimism | sadness | surprise | trust |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 0.38 | 0.15 | 0.39 | 0.19 | 0.37 | 0.11 | 0.30 | 0.12 | 0.30 | 0.05 | 0.05 |
+
+Clearly the training dataset isn't balanced and there are some emotions with very few data available (surprise, trust).
+
 #### Extracting embeddings
 
+The embeddings on Laser's 1024-dimensional space can be easily obtaine with:
+```
+from laserembeddings import Laser
+laser = Laser()
+X_train_embeddings = laser.embed_sentences(X_train_clean,lang='en')
+```
+
+This results in a matrix with this shape for the trainig dataset:
+```
+(6634, 1024)
+```
+
 #### Training the multi-label classifier
+
+We first define the following MLP using as a template the example one from the BP-MLL implementation.
+* 2 hidden layers with an arbitrary number of neurons each
+* ReLU activation functions on the hidden layers
+* Sigmoid output function
+* Adaptive Gradient Algorithm (Adagrad) optimization function
+
+```
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.losses import BinaryCrossentropy
+from bpmll import bp_mll_loss
+
+n = X_train_embeddings.shape[0]
+dim_no = X_train_embeddings.shape[1]
+class_no = Y_train_clean.shape[1]
+
+print("n:",n,"dim_no:",dim_no,"class_no:",class_no,"\n")
+
+# Simple MLP definition
+model = Sequential()
+model.add(Dense(128, input_dim=dim_no, activation='relu', kernel_initializer='glorot_uniform'))
+model.add(Dense(24, activation='relu', kernel_initializer='glorot_uniform'))
+model.add(Dense(class_no, activation='sigmoid', kernel_initializer='glorot_uniform'))
+model.summary()
+model.compile(loss=bp_mll_loss, optimizer='adagrad', metrics = ['accuracy'])
+```
+
+We can train for a few epochs with:
+```
+model.fit(X_train_embeddings, Y_train_clean, epochs=20, validation_data=(X_dev_embeddings, Y_dev_clean))
+```
 
 #### Evaluation of the multi-label classifier
 
