@@ -8,7 +8,7 @@ Final project for the Building AI course
 
 TL;DR: this project builds an **AI that predicts 11 emotions from text sentences in 93 languages** and you can try it on real tweets going to https://emotions.aitorperez.com
 
-![Screenshot](/docs/emotions.png)
+![Desktop screenshot](/docs/emotions.png)
 
 ## Background
 
@@ -495,6 +495,8 @@ You can find an interactive demonstration at https://emotions.aitorperez.com whe
 * The NLP pipeline runs in Python (tokenizing sentences with NLTK + extracting embeddings with LASER) and has been deployed in a Google Cloud Function.
 * The trained models run on the browser with TensorFlowJS.
 * The frontend was developed with React and Material-UI and is deployed at Netlify
+
+![Mobile screenshot](/docs/mobile.png)
 
 ## Data sources and AI methods
 
