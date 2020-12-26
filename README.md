@@ -48,7 +48,7 @@ nltkdownload('punkt')
 
 #### Preparing the datasets
 
-First, we load the data to numpy arrays from the txt files:
+First, we load the data to numpy arrays from the txt files splitting into input arrays and output arrays by columns:
 
 ```python
 import numpy as np
@@ -166,9 +166,45 @@ model.fit(X_train_embeddings, Y_train_clean, epochs=20, validation_data=(X_dev_e
 
 #### Evaluation of the multi-label classifier
 
+The training results show below average results (far worse than a coin toss):
+
+```python
+Epoch 20/20
+208/208 [==============================] - 3s 13ms/step - loss: 0.9654 - accuracy: 0.3850 - val_loss: 0.9643 - val_accuracy: 0.3612
+```
+
+The trained model can be further evaluated with the test dataset:
+
+```python
+results = model.evaluate(X_dev_embeddings, Y_dev_clean, batch_size=128, verbose=0)
+print("test loss, test acc:", results)
+```
+
+With results in the same level of failure:
+
+```python
+test loss, test acc: [0.9661824107170105, 0.34579145908355713]
+```
+
+Some experimentation:
+
+| Configuration | Test Loss | Test Accuracy |
+| --- | --- | --- |
+| One hidden layer (N = 2048 | 0.9317 | 0.3304 |
+| One hidden layer (N = 1024) | 0.9345 | 0.3433 |
+| One hidden layer (N = 128) | 0.9518 | 0.3304 |
+| One hidden layer (N = 64) | 0.9592 | 0.3433 |
+
+It appears that
+
+From the previous analysis of the corpus it was clear that the training subset is small and not balanced.
+
+
+
+
 #### Defining a base binary classifier
 
-#### Cross-validation and baseline evaluation for each separate classification task
+#### Cross-validation and baseline calculation for each separate classification task
 
 #### Training multiple binary classifiers
 
