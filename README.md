@@ -528,6 +528,8 @@ As it stands, this project does a decent job of identifying probable emotions fr
 But it sometime fails because it is not taking into consideration the context (the other sentences of the tweet): in some instances it gives hilarious combinations on a single tweet that don't hold upon human review.
 Trying to then infer emotion for the full tweet is not feasible with this unless almost each sentence carries similar sentiment (in the demo I average probabilities and show number of occurrences, but it is far from a realistic reasoning).
 
+Another way it fails is because it is unaware of sarcasm an irony (which Twitter is full of).
+
 The training was done with full tweets (in absence of a dataset of sentences) but the real use case is in analyzing sentences and the input features are the LASER embeddings which are intended to be extracted from sentences (not full tweets).
 
 This mismatch probably has made the AI system less accurate.
@@ -553,6 +555,7 @@ To build upon this project, some next steps that could be taken are:
 * Replacing it with a dataset more appropriate (one with annotations for sentences, for example)
 * Fine-tunning the current neural network design
 * Evaluating other solutions (including simpler ones like Naive Bayes Classifications, Nearest Neighbours, etc.)
+* Introduce sarcasm, irony into the datasets
 
 As for the applicability, i think that the actual tokenization and prediction is quite fast, so embedding into server or desktop applications would be feasible.
 The dependencies (specifically the pre-trained Laser model) are quite heavy so it would be problematic on mobile applications.
