@@ -26,11 +26,6 @@ After doing some research (mainly about Natural Language Processing, due to pers
 I thought it would be interesting to try to put together an AI capable of doing a given task in any language.
 
 ## How is it used?
-*Describe the process of using the solution. In what kind situations is the solution needed (environment, time, etc.)? Who are the users, what kinds of needs should be taken into account?*
-
-
-
-
 
 ### Development process
 
