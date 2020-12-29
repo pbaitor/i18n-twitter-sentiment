@@ -1,6 +1,7 @@
-# Multi-languange sentiment analysis using neural networks and zero shot cross lingual transfer learning.
+# Multi-languange Twitter sentiment analysis.
 
-Final project for the Building AI course
+Multi-languange affect analysis using neural networks and zero-shot cross-lingual transfer learning.
+Final project for the Building AI course.
 
 *December 2020*
 
